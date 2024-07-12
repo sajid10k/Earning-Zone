@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earning Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .balance {
+            text-align: right;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .task {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            position: relative;
+        }
+        .task h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        .task p {
+            margin-bottom: 10px;
+        }
+        .task button {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .task button:hover {
+            background-color: #45a049;
+        }
+        .edit-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: underline;
+            display: none; /* Initially hidden for non-admin users */
+        }
+        .edit-link:hover {
+            color: #0056b3;
+        }
+        .admin-panel {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+        }
+        .admin-panel input[type="text"],
+        .admin-panel input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .admin-panel button {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .admin-panel button:hover {
+            background-color: #45a049;
+        }
+  															
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="balance" id="balanceDisplay">
+            Balance: $0.00 <!-- Initial balance -->
+        </div>
+        <div class="task" id="task1">
+            <h3>Task 1: Answer Surveys</h3>
+            <p>Earn $1.00 per survey completed.</p>
+            <button onclick="completeTask(1, 1.00)">Complete Task</button>
+            <span class="edit-link" onclick="editTask(1)">Edit</span>
+        </div>
+        <div class="task" id="task2">
+            <h3>Task 2: Watch Videos</h3>
+            <p>Earn $0.50 for every 10-minute video watched.</p>
+            <button onclick="completeTask(2, 0.50)">Complete Task</button>
+            <span class="edit-link" onclick="editTask(2)">Edit</span>
+        </div>
+        <div class="task" id="task3">
+            <h3>Task 3: Play Games</h3>
+            <p>Earn $2.00 for reaching level 5 in a game.</p>
+            <button onclick="completeTask(3, 2.00)">Complete Task</button>
+            <span class="edit-link" onclick="editTask(3)">Edit</span>
+        </div>
+        <div class="task" id="task4">
+            <h3>Task 4: Install Apps</h3>
+            <p>Earn $0.75 for every app installed and used for 3 days.</p>
+            <button onclick="completeTask(4, 0.75)">Complete Task</button>
+            <span class="edit-link" onclick="editTask(4)">Edit</span>
+        </div>
+        <div class="task" id="task5">
+            <h3>Task 5: Refer Friends</h3>
+            <p>Earn $5.00 for every friend who signs up and completes a task.</p>
+            <button onclick="completeTask(5, 5.00)">Complete Task</button>
+            <span class="edit-link" onclick="editTask(5)">Edit</span>
+        </div>
+     							 <button onclick="document.location='withdraw.html'">Withdraw</button>
+      					
+
+        <!-- Admin Panel (Hidden by default) -->
+        <div class="admin-panel" id="adminPanel">
+            <input type="text" id="taskTitle" placeholder="Enter new task title...">
+            <input type="url" id="taskLink" placeholder="Enter new task link...">
+            <button onclick="saveTask()">Save Changes</button>
+        </div>
+    </div>
+
+    <script>
+        let balance = 0.00; // Initial balance
+        let lastCompletionTime = {}; // Object to store last completion times for tasks
+        let lastEditTime = {}; // Object to store last edit times for tasks
+        const taskLinks = {
+            1: 'https://example.com/surveys',
+            2: 'https://example.com/videos',
+            3: 'https://example.com/games',
+            4: 'https://example.com/apps',
+            5: 'https://example.com/referrals'
+        }; // Default links for tasks
+
+        // Function to update balance display
+        function updateBalanceDisplay() {
+            document.getElementById('balanceDisplay').textContent = `Balance: $${balance.toFixed(2)}`;
+        }
+
+        // Function to save balance to local storage
+        function saveBalanceToLocalStorage() {
+            localStorage.setItem('balance', balance.toString());
+        }
+
+        // Function to complete a task
+        function completeTask(taskId, amount) {
+            // Check if 24 hours have passed since last completion
+            if (canCompleteTask(taskId)) {
+                // Simulate task completion logic (e.g., API call, validation)
+                // Here, we'll just increase the balance for demonstration
+                balance += amount;
+
+                // Update the balance display
+                updateBalanceDisplay();
+
+                // Update last completion time for this task
+                lastCompletionTime[taskId] = new Date();
+                
+                // Store lastCompletionTime in local storage
+                localStorage.setItem('lastCompletionTime', JSON.stringify(lastCompletionTime));
+
+                // Optionally, provide feedback to the user
+                alert(`Task ${taskId} completed! You earned $${amount.toFixed(2)}.`);
+
+                // Save balance to local storage
+                saveBalanceToLocalStorage();
+            } else {
+                alert('You can only complete this task once every 24 hours.');
+            }
+        }
+
+        // Function to check if a task can be completed
+        function canCompleteTask(taskId) {
+            // Check if last completion time exists and if it's been more than 24 hours
+            return !lastCompletionTime[taskId] || (new Date() - new Date(lastCompletionTime[taskId]) > 24 * 60 * 60 * 1000);
+        }
+
+        // Function to edit a task
+        function editTask(taskId) {
+            // Check if 24 hours have passed since last edit
+            if (canEditTask(taskId)) {
+                // Simulate showing the admin panel to edit the task title
+                document.getElementById('adminPanel').style.display = 'block';
+
+                // Get the current task title and link
+                const taskElement = document.getElementById(`task${taskId}`);
+                const taskTitle = taskElement.querySelector('h3').textContent;
+
+                // Pre-fill the admin panel input with current task title and link
+                document.getElementById('taskTitle').value = taskTitle.trim();
+                document.getElementById('taskLink').value = taskLinks[taskId];
+
+                // Save the task ID to know which task is being edited
+                document.getElementById('adminPanel').dataset.taskId = taskId;
+            } else {
+                alert('You can only edit this task once every 24 hours.');
+            }
+        }
+
+        // Function to save edited task
+        function saveTask() {
+            // Get the edited task title and link from the admin panel
+            const taskId = document.getElementById('adminPanel').dataset.taskId;
+            const newTaskTitle = document.getElementById('taskTitle').value;
+            const newTaskLink = document.getElementById('taskLink').value;
+
+            // Update the task title on the page
+            const taskElement = document.getElementById(`task${taskId}`);
+            taskElement.querySelector('h3').textContent = newTaskTitle.trim();
+
+            // Update the task link
+            taskLinks[taskId] = newTaskLink.trim();
+
+            // Hide the admin panel after saving
+            document.getElementById('adminPanel').style.display = 'none';
+
+            // Optionally, notify user or perform other actions
+            alert(`Task ${taskId} updated successfully.`);
+
+            // Update last edit time for this task
+            lastEditTime[taskId] = new Date();
+
+            // Save lastEditTime in local storage
+            localStorage.setItem('lastEditTime', JSON.stringify(lastEditTime));
+        }
+
+        // Function to check if a task can be edited
+        function canEditTask(taskId) {
+            // Check if last edit time exists and if it's been more than 24 hours
+            return !lastEditTime[taskId] || (new Date() - new Date(lastEditTime[taskId]) > 24 * 60 * 60 * 1000);
+        }
+
+        // Initialize balance and completion times from local storage on page load
+        function initializeFromLocalStorage() {
+            const storedBalance = localStorage.getItem('balance');
+            if (storedBalance !== null) {
+                balance = parseFloat(storedBalance);
+                updateBalanceDisplay();
+            }
+
+            const storedLastCompletionTime = localStorage.getItem('lastCompletionTime');
+            if (storedLastCompletionTime !== null) {
+                lastCompletionTime = JSON.parse(storedLastCompletionTime);
+            }
+
+            const storedLastEditTime = localStorage.getItem('lastEditTime');
+            if (storedLastEditTime !== null) {
+                lastEditTime = JSON.parse(storedLastEditTime);
+            }
+        }
+
+        // Call initializeFromLocalStorage on page load
+        initializeFromLocalStorage();
+
+        // Script to check if user is admin (simulation)
+        const isAdmin = true; // Simulating admin status (you would validate this properly)
+
+        if (isAdmin) {
+            const editLinks = document.querySelectorAll('.edit-link');
+            editLinks.forEach(link => {
+                link.style.display = 'inline'; // Show edit links for admins
+            });
+        }
+    </script>
+</body>
+</html>

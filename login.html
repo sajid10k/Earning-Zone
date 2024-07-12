@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <form class="login-form" id="loginForm" onsubmit="return validateForm()">
+            <h2>Login to Your Account</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <button type="button" onclick="goToRegistration()">Registration</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            var username = document.getElementById("username").value.trim();
+            var password = document.getElementById("password").value;
+
+            // Retrieve registration details from localStorage
+            var regUsername = localStorage.getItem("registeredUsername");
+            var regPassword = localStorage.getItem("registeredPassword");
+
+            // Example validation (replace with your own logic)
+            if (username === regUsername && password === regPassword) {
+                alert("Login successful!");
+                window.location.href = "home.html"; // Redirect to home page
+                return false; // Prevent form submission to stop the form from reloading the page
+            } else {
+                alert("Invalid username or password. Please try again.");
+                return false; // Prevent form submission
+            }
+        }
+
+        function goToRegistration() {
+            // Redirect to registration page
+            window.location.href = "regi.html";
+        }
+    </script>
+</body>
+</html>

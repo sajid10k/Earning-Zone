@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earning Center  - Withdraw Page</title>
+    <link rel="stylesheet" href="homecss.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Withdraw Money</h1>
+        <form id="withdrawForm">
+            <label for="amount">Enter Amount:</label>
+            <input type="number" id="amount" name="amount" required>
+            <label for="method">Select Withdrawal Method:</label>
+            <select id="method" name="method" required>
+                <option value="">Select Method</option>
+                <option value="paypal">PayPal</option>
+                <option value="Bkash">Bkash</option>
+                <option value="Nagad">Nagad</option>
+                <option value="bank">Bank Transfer</option>
+                <option value="crypto">Crypto Wallet</option>
+            </select>
+            <label for="details">Enter Details:</label>
+            <textarea id="details" name="details" rows="4" required></textarea>
+            <button type="submit">Withdraw</button>
+        </form>
+        <div id="message"></div>
+      
+        <div class="verify-section">
+            <h2>Verify Account To Cash Out</h2>
+            <p>Before you can proceed with your withdrawal request, please ensure your account is verified. Verification helps us maintain security and compliance standards.</p>
+            <p>To verify your account:</p>
+            <ul>
+                <li>Provide valid identification documents.</li>
+                <li>Confirm your email address and phone number.</li>
+                <li>Complete any additional verification steps as required.</li>
+            </ul>
+            <button id="verifyAccountBtn">Verify Account</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('verifyAccountBtn').addEventListener('click', function() {
+            window.location.href = 'verify.html'; // Redirects to the verification page
+        });
+    </script>
+</body>
+</html>
